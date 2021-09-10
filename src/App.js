@@ -7,14 +7,17 @@ function App() {
   const [selected, setSelected] = React.useState("");
   const [trendingData, setTrendingData] = React.useState();
   const [filterData, setFilterData] = React.useState();
+  const [loading, setLoading] = React.useState(false);
 
   const handleSelectTrending = () => {
     setClicked(false);
+    setLoading(true);
     setSelected("trending");
     Axios.get(
       "https://api.giphy.com/v1/gifs/trending?api_key=BBllUXSslRRw4234LL4rT5VfMbKLLG6A"
     ).then((res) => {
       setTrendingData(res.data.data);
+      setLoading(false);
       // console.log(res.data.data, trendingData);
     });
   };
@@ -56,12 +59,11 @@ function App() {
       {clicked ? (
         <>
           <p>Click any of the links above</p>
-          <div class="spinner-border" role="status" />
         </>
       ) : selected === "trending" ? (
         <div className="text-center w-100">
           <p className="mt-1">Trending List of Giphy:</p>
-          <div className="row my-3">
+          {loading === true ? <div class="spinner-border" role="status" /> : (<div className="row my-3">
             {trendingData &&
               trendingData.map((item) => {
                 return (
@@ -88,11 +90,11 @@ function App() {
                   </div>
                 );
               })}
-          </div>
+          </div>)}
         </div>
       ) : (
         <div>
-          <div className="d-flex flex-column text-center justify-content-center align-items-center w-100">
+          <div className="d-flex flex-column text-center justify-content-center align-items-center">
             <p className="my-3">Search List of Giphy:</p>
             <input
               style={{ maxWidth: "300px", textAlign: "center" }}
@@ -101,7 +103,7 @@ function App() {
             />{" "}
             &nbsp;&nbsp;
           </div>
-          <div className="row my-3">
+          <div className="row">
             {filterData === [] ? (
               <div className="col-md-3">
                 <div class="card mx-2 my-3 bg-success">

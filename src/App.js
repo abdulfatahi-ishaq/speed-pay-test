@@ -32,8 +32,8 @@ function App() {
         String(obj[key]).toLowerCase().includes(value.toLowerCase())
       )
     );
-    setFilterData(filterData);
-    console.log(filterData);
+   setFilterData(filterData);
+   console.log(filterData);
   };
 
   // React.useEffect(() => {
@@ -90,21 +90,19 @@ function App() {
       ) : (
         <div>
           <div className="d-flex flex-column text-center justify-content-center align-items-center">
-            <p className="my-3">Search List of Giphy:</p>
-            <input
-              style={{ maxWidth: "300px", textAlign: "center" }}
-              placeholder="Enter Search"
-              onChange={(e) => handleFilterSearch(e)}
-            />{" "}
-            &nbsp;&nbsp;
-          </div>
-          {filterData === null ? (
-            <p className="text-center text-dark">No Result Found</p>
-          ) : (
-            filterData &&
-            filterData.map((item) => {
-              return (
-                <div className="row my-3">
+          <p className="my-3">Search List of Giphy:</p>
+            <input style={{maxWidth:'300px', textAlign:'center'}} placeholder="Enter Search" onChange={(e)=>handleFilterSearch(e)}/> &nbsp;&nbsp;
+            </div>
+            <div className="row my-3">
+            {filterData === [] ? (<div class="card mx-2 my-3">
+                      <div class="card-body">
+                        <p style={{ textAlign: "left" }} class="text-left">
+                         No Result Found
+                        </p>
+                      </div>
+                    </div>) : filterData &&
+              filterData.map((item) => {
+                return (
                   <div className="col-md-3">
                     <div class="card mx-2 my-3">
                       <img
@@ -126,10 +124,9 @@ function App() {
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })
-          )}
+                );
+              })}
+          </div>
         </div>
       )}
       {/* {selected === "trending" ? <div>Trending List of Giphy</div> : <div>Search List of Giphy:</div>} */}

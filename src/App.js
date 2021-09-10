@@ -68,7 +68,7 @@ function App() {
                         height="100px"
                         class="card-img-top"
                         src={item.images.downsized.url}
-                        alt="Card image cap"
+                        alt="gif"
                       />
                       <div class="card-body">
                         <p style={{ textAlign: "left" }} class="text-left">
@@ -111,7 +111,7 @@ function App() {
                         height="100px"
                         class="card-img-top"
                         src={item.images.downsized.url}
-                        alt="Card image cap"
+                        alt="gif"
                       />
                       <div class="card-body">
                         <p style={{ textAlign: "left" }} class="text-left">

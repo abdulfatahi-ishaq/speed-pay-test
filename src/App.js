@@ -25,18 +25,23 @@ function App() {
   const handleSelectSearch = () => {
     setClicked(false);
     setSelected("search");
+    Axios.get(
+      "https://api.giphy.com/v1/gifs/trending?api_key=BBllUXSslRRw4234LL4rT5VfMbKLLG6A"
+    ).then((res) => {
+      setFilterData(res.data.data);
+      // console.log(res.data.data, trendingData);
+    });
     // console.log(selected, clicked);
   };
 
   const handleFilterSearch = (e) => {
     const { value } = e.target;
-    const filterData = [...trendingData].filter((obj) =>
+    const newFilterData = [...filterData].filter((obj) =>
       Object.keys(obj).some((key) =>
         String(obj[key]).toLowerCase().includes(value.toLowerCase())
       )
     );
-    setFilterData(filterData);
-    console.log(filterData);
+    setFilterData(newFilterData);
   };
 
   // React.useEffect(() => {
@@ -63,12 +68,62 @@ function App() {
       ) : selected === "trending" ? (
         <div className="text-center w-100">
           <p className="mt-1">Trending List of Giphy:</p>
-          {loading === true ? <div class="spinner-border" role="status" /> : (<div className="row my-3">
-            {trendingData &&
-              trendingData.map((item) => {
+          {loading === true ? (
+            <div class="spinner-border" role="status" />
+          ) : (
+            <div className="row my-3">
+              {trendingData &&
+                trendingData.map((item) => {
+                  return (
+                    <div className="col-md-3">
+                      <div class="card mx-2 my-3">
+                        <img
+                          height="100px"
+                          class="card-img-top"
+                          src={item.images.downsized.url}
+                          alt="gif"
+                        />
+                        <div class="card-body">
+                          <p style={{ textAlign: "left" }} class="text-left">
+                            By: <b>{item.username}</b>
+                          </p>
+                          <p
+                            style={{ textAlign: "left", fontSize: "15px" }}
+                            class="text-left"
+                          >
+                            Date of Trend: <b>{item.trending_datetime}</b>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div>
+          <div className="d-flex flex-column text-center justify-content-center align-items-center">
+            <p className="my-3">Search List of Giphy:</p>
+            <input
+              style={{ maxWidth: "300px", textAlign: "center" }}
+              placeholder="Enter Search"
+              onChange={(e) => handleFilterSearch(e)}
+            />{" "}
+            &nbsp;&nbsp;
+          </div>
+          {filterData &&   <div className="row">
+            {filterData.length === 0 ? (
+              <p style={{ textAlign: "center" }}>No Result Found</p>
+            ) : (
+              filterData &&
+              filterData.map((item) => {
                 return (
                   <div className="col-md-3">
-                    <div class="card mx-2 my-3">
+                    <div
+                      style={{ minWidth: "25vw", maxHeight: "200px" }}
+                      class="card mx-2 my-3"
+                    >
                       <img
                         height="100px"
                         class="card-img-top"
@@ -89,60 +144,9 @@ function App() {
                     </div>
                   </div>
                 );
-              })}
-          </div>)}
-        </div>
-      ) : (
-        <div>
-          <div className="d-flex flex-column text-center justify-content-center align-items-center">
-            <p className="my-3">Search List of Giphy:</p>
-            <input
-              style={{ maxWidth: "300px", textAlign: "center" }}
-              placeholder="Enter Search"
-              onChange={(e) => handleFilterSearch(e)}
-            />{" "}
-            &nbsp;&nbsp;
-          </div>
-          <div className="row">
-            {filterData === [] ? (
-              <div className="col-md-3">
-                <div class="card mx-2 my-3 bg-success">
-                  <div class="card-body">
-                    <p style={{ textAlign: "left" }} class="text-left">
-                      No Result Found
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              filterData &&
-              filterData.map((item) => {
-                return (
-                  <div className="col-md-3">
-                  <div style={{minWidth:'25vw',maxHeight:'200px'}} class="card mx-2 my-3">
-                    <img
-                      height="100px"
-                      class="card-img-top"
-                      src={item.images.downsized.url}
-                      alt="gif"
-                    />
-                    <div class="card-body">
-                      <p style={{ textAlign: "left" }} class="text-left">
-                        By: <b>{item.username}</b>
-                      </p>
-                      <p
-                        style={{ textAlign: "left", fontSize: "15px" }}
-                        class="text-left"
-                      >
-                        Date of Trend: <b>{item.trending_datetime}</b>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                );
               })
             )}
-          </div>
+          </div>}
         </div>
       )}
       {/* {selected === "trending" ? <div>Trending List of Giphy</div> : <div>Search List of Giphy:</div>} */}
